@@ -3,9 +3,14 @@ import sys
 import sys, pickle, re
 import pandas as pd
 import numpy as np
+
 import nltk
+nltk.download(['punkt', 'wordnet','stopwords'])
 from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+from nltk.stem.porter import PorterStemmer
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
@@ -14,7 +19,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
 from sqlalchemy import create_engine
-nltk.download(['punkt', 'wordnet'])
+
 
 def load_data(database_filepath):
         """
@@ -27,17 +32,17 @@ def load_data(database_filepath):
     category_names list: Target labels
     """
     # connect the database
-    engine = create_engine(f"sqlite:///{database_filepath}")
+        engine = create_engine(f"sqlite:///{database_filepath}")
     # fetch the table
-    df = pd.read_sql_table('Disaster', engine)
+        df = pd.read_sql_table('Disaster', engine)
     # select features
-    X = df['message']
+        X = df['message']
     # select targets
-    Y = df.loc[:,'related':]
+        Y = df.loc[:,'related':]
     # Y['related'] contains three distinct values mapping extra values to `1`
-    Y['related']=Y['related'].map(lambda x: 1 if x == 2 else x)
-    category_names = Y.columns
-    return X,Y,category_names
+        Y['related']=Y['related'].map(lambda x: 1 if x == 2 else x)
+        category_names = Y.columns
+        return X,Y,category_names
 
 def tokenize(text):
         """
@@ -48,17 +53,17 @@ def tokenize(text):
     words list: Processed text after all text processing steps
     """
     # (1) Normalization
-    text = re.sub(r"[^a-zA-Z0-9]", " ",text.lower())
+        text = re.sub(r"[^a-zA-Z0-9]", " ",text.lower())
     # (2) Tokenization
-    words = word_tokenize(text)
+        words = word_tokenize(text)
     # (3) Remove stop words
-    words = [w for w in words if w not in stopwords.words("english")]
+        words = [w for w in words if w not in stopwords.words("english")]
     # (4) Lemmatization -- Reduce words to their root form
-    words = [WordNetLemmatizer().lemmatize(w) for w in words]
+        words = [WordNetLemmatizer().lemmatize(w) for w in words]
     # (5) Stemming -- Reduce words to their stems
-    stemmed = [PorterStemmer().stem(w) for w in words]
+        stemmed = [PorterStemmer().stem(w) for w in words]
 
-    return stemmed
+        return stemmed
 
 
 def build_model():
@@ -69,22 +74,22 @@ def build_model():
     Trained model
     """
     # build a pipeline
-    pipeline = Pipeline([
-        ('vect', CountVectorizer(tokenizer=tokenize)),
-        ('tfidf', TfidfTransformer()),
-        ('clf', MultiOutputClassifier(RandomForestClassifier()))
-    ])
+        pipeline = Pipeline([
+            ('vect', CountVectorizer(tokenizer=tokenize)),
+            ('tfidf', TfidfTransformer()),
+            ('clf', MultiOutputClassifier(RandomForestClassifier()))
+        ])
     # params dict to tune a model
-    parameters = {
-        'vect__ngram_range': ((1, 1), (1, 2)),
-        'tfidf__use_idf': (True, False),
-        'clf__estimator__min_samples_split': [2, 4],
-        'clf__estimator__max_depth': [25, 100, 200],
-    }
+        parameters = {
+            'vect__ngram_range': ((1, 1), (1, 2)),
+            'tfidf__use_idf': (True, False),
+            'clf__estimator__min_samples_split': [2, 4],
+            'clf__estimator__max_depth': [25, 100, 200],
+        }
     # instantiate a gridsearchcv object with the params defined
-    cv = GridSearchCV(pipeline, param_grid=parameters, verbose=4, n_jobs=6)
+        cv = GridSearchCV(pipeline, param_grid=parameters, verbose=4, n_jobs=6)
 
-    return cv
+        return cv
 
 def evaluate_model(model, X_test, Y_test, category_names):
         '''
@@ -96,10 +101,10 @@ def evaluate_model(model, X_test, Y_test, category_names):
     Outputs: Prints the Classification report & Accuracy Score
     '''
     # predict on test data with tuned params
-    y_pred = model.predict(X_test)
+        y_pred = model.predict(X_test)
     # print classification report
-    print(classification_report(Y_test.values, y_pred,
-     target_names=category_names))
+        print(classification_report(Y_test.values, y_pred,
+        target_names=category_names))
 
 def save_model(model, model_filepath):
         '''
@@ -107,7 +112,7 @@ def save_model(model, model_filepath):
     Input: model and the file path to save the model
     Output: save the model as pickle file in the give filepath
     '''
-    pickle.dump(model, open(model_filepath, 'wb'))
+        pickle.dump(model, open(model_filepath, 'wb'))
 
 def main():
     if len(sys.argv) == 3:
@@ -120,7 +125,7 @@ def main():
         model = build_model()
 
         print('Training model...')
-        model.fit(X_train, Y_train)
+        model.fit(X_train, Y_train.astype(int))
 
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)

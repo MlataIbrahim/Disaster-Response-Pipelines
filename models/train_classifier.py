@@ -79,8 +79,6 @@ def build_model():
         'vect__ngram_range': ((1, 1), (1, 2)),
         'tfidf__use_idf': (True, False),
         'clf__estimator__min_samples_split': [2, 4],
-        'clf__estimator__max_features': [None, 'log2', 'sqrt'],
-        'clf__estimator__criterion': ['gini', 'entropy'],
         'clf__estimator__max_depth': [25, 100, 200],
     }
     # instantiate a gridsearchcv object with the params defined

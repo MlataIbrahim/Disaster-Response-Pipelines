@@ -9,9 +9,8 @@ Data Engineering Section -- Project: Disaster Response Pipeline
 5. [Results](#results)
 
 ## Project Motivation <a name="ProjectMotivation"></a>
-This is Udacity Nanodegree Project,we will analyzing disaster data to build a model for an API that classifies disaster messages.
-In this project you will find a data set [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) from **Figure Eight** containing real messages that were sent during disaster events that have been sorted into 36 categories. These messages are sorted into specific categories such as Water, Hospitals, Aid-Related, that are specifically aimed at helping emergency personnel in their aid efforts.
- You will find also a machine learning pipeline to categorize these events so that you can send the messages to an appropriate disaster relief agency.
+This is a Udacity Nanodegree Project,we will analyzing disaster data to build a model for an API that classifies disaster messages.
+In this project you will find a data set [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) from **Figure Eight** containing real messages that were sent during disaster events. These messages are sorted into 36 specific categories such as Water, Hospitals, Aid-Related, that are specifically aimed at helping emergency personnel in their aid efforts.
 
 You will see the result on a web app where an emergency worker can input a new message and get classification results on several categories. The web app will also display visualizations of the data.
 
@@ -21,7 +20,7 @@ You will see the result on a web app where an emergency worker can input a new m
 
 **ML Pipeline:** `train_classifier.py`, a machine learning pipeline that: Loads data from the SQLite database Splits the dataset into training and test sets Builds a text processing and machine learning pipeline Trains and tunes a model using GridSearchCV Outputs results on the test set Exports the final model as a pickle file
 
-**Flask Web App:** We will be taking the user message and classify them into 36 categories.
+**Flask Web App:**`run.py` We will be taking the user message and classify them into 36 categories.
 
 ### Installation <a name="installation"></a>
 For running this project,from **requirements.txt** with `pip install requirements.txt` you will install all necessary python packages for analysis and building models .

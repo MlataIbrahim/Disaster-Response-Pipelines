@@ -9,7 +9,7 @@ Data Engineering Section -- Project: Disaster Response Pipeline
 4. [Results](#results)
 
 ## Project Motivation <a name="ProjectMotivation"></a>
-This is Udacity Nanodegree Project,we will analyzing disaster data from Figure Eight to build a model for an API that classifies disaster messages.
+This is Udacity Nanodegree Project,we will analyzing disaster data to build a model for an API that classifies disaster messages.
 In this project you will find a data set [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) from **Figure Eight** containing real messages that were sent during disaster events that have been sorted into 36 categories. These messages are sorted into specific categories such as Water, Hospitals, Aid-Related, that are specifically aimed at helping emergency personnel in their aid efforts.
  You will find also a machine learning pipeline to categorize these events so that you can send the messages to an appropriate disaster relief agency.
 

@@ -3,10 +3,10 @@ Data Engineering Section -- Project: Disaster Response Pipeline
 
 ## Table of Contents
 1. [Project Motivation](#ProjectMotivation)
-1. [Installation](#installation)
-2. [Instructions](#instructions)
+2. [Installation](#installation)
 3. [File Descriptions](#files)
-4. [Results](#results)
+4. [Instructions](#instructions)
+5. [Results](#results)
 
 ## Project Motivation <a name="ProjectMotivation"></a>
 This is Udacity Nanodegree Project,we will analyzing disaster data to build a model for an API that classifies disaster messages.
@@ -24,8 +24,13 @@ You will see the result on a web app where an emergency worker can input a new m
 **Flask Web App:** We will be taking the user message and classify them into 36 categories.
 
 ### Installation <a name="installation"></a>
-For running this project, the most important library is Python version of Anaconda Distribution. It installs all necessary packages for analysis and building models.
+For running this project,from **requirements.txt** with `pip install requirements.txt` you will install all necessary python packages for analysis and building models .
 
+### File Descriptions <a name="files"></a>
+1. data/process_data.py: The ETL pipeline used to process and clean data in preparation for model building.
+2. models/train_classifier.py: The Machine Learning pipeline used to fit, tune, evaluate, and export the model to a Python pickle.
+3. app/templates/.html: HTML templates required for the web app.
+4. app/run.py: To start the Python server for the web app and render visualizations.
 
 ### Instructions <a name="instructions"></a>
 1. Run the following commands in the project's root directory to set up your database and model.
@@ -36,13 +41,6 @@ For running this project, the most important library is Python version of Anacon
 2. Run the following command in the app's directory to run your web app.
     `python run.py`
 3. Go to http://0.0.0.0:3001/
-
-
-### File Descriptions <a name="files"></a>
-1. data/process_data.py: The ETL pipeline used to process and clean data in preparation for model building.
-2. models/train_classifier.py: The Machine Learning pipeline used to fit, tune, evaluate, and export the model to a Python pickle.
-3. app/templates/*.html: HTML templates required for the web app.
-4. app/run.py: To start the Python server for the web app and render visualizations.
 
 ### Results<a name="results"></a>
 The main observations of the trained classifier can be seen by running this application.

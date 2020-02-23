@@ -29,7 +29,7 @@ def load_data(database_filepath):
     # connect the database
     engine = create_engine(f"sqlite:///{database_filepath}")
     # fetch the table
-    df = pd.read_sql_table('Disatser', engine)
+    df = pd.read_sql_table('Disaster', engine)
     # select features
     X = df['message']
     # select targets

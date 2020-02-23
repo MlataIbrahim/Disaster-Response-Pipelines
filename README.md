@@ -9,9 +9,19 @@ Data Engineering Section -- Project: Disaster Response Pipeline
 4. [Results](#results)
 
 ## Project Motivation <a name="ProjectMotivation"></a>
-Figure Eight Data Set:  [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) provides thousands of messages that have been sorted into 36 categories. These messages are sorted into specific categories such as Water, Hospitals, Aid-Related, that are specifically aimed at helping emergency personnel in their aid efforts.
+This is Udacity Nanodegree Project,we will analyzing disaster data from Figure Eight to build a model for an API that classifies disaster messages.
+In this project you will find a data set [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) from **Figure Eight** containing real messages that were sent during disaster events that have been sorted into 36 categories. These messages are sorted into specific categories such as Water, Hospitals, Aid-Related, that are specifically aimed at helping emergency personnel in their aid efforts.
+ You will find also a machine learning pipeline to categorize these events so that you can send the messages to an appropriate disaster relief agency.
 
-The main goal of this project is to build an app that can help emergency workers analyze incoming messages and sort them into specific categories to speed up aid and contribute to more efficient distribution of people and other resources.
+You will see the result on a web app where an emergency worker can input a new message and get classification results on several categories. The web app will also display visualizations of the data.
+
+**Project Components :** There are three components we'll need to complete for this project.
+
+**ETL Pipeline:** `process_data.py`, a data cleaning pipeline that: Loads the messages and categories datasets Merges the two datasets Cleans the data Stores it in a SQLite database
+
+**ML Pipeline:** `train_classifier.py`, a machine learning pipeline that: Loads data from the SQLite database Splits the dataset into training and test sets Builds a text processing and machine learning pipeline Trains and tunes a model using GridSearchCV Outputs results on the test set Exports the final model as a pickle file
+
+**Flask Web App:** We will be taking the user message and classify them into 36 categories.
 
 ### Installation <a name="installation"></a>
 For running this project, the most important library is Python version of Anaconda Distribution. It installs all necessary packages for analysis and building models.

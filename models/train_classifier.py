@@ -1,3 +1,4 @@
+# imports libraries
 import sys
 import sys, pickle, re
 import pandas as pd
@@ -16,15 +17,36 @@ from sqlalchemy import create_engine
 nltk.download(['punkt', 'wordnet'])
 
 def load_data(database_filepath):
-    engine = create_engine('sqlite:///{}'.format(database_filepath))
+        """
+    Loads data from SQLite Database
+    INPUT:
+    database_filepath: SQLite database file
+    OUPUT:
+    X : Features dataframe
+    Y : Target dataframe
+    category_names list: Target labels
+    """
+    # connect the database
+    engine = create_engine(f"sqlite:///{database_filepath}")
+    # fetch the table
     df = pd.read_sql_table('Disatser', engine)
-    #df = pd.read_csv(database_filepath)
+    # select features
     X = df['message']
+    # select targets
     Y = df.loc[:,'related':]
-    category_names = y.columns
+    # Y['related'] contains three distinct values mapping extra values to `1`
+    Y['related']=Y['related'].map(lambda x: 1 if x == 2 else x)
+    category_names = Y.columns
     return X,Y,category_names
 
 def tokenize(text):
+        """
+    Tokenizes text data
+    INPUT:
+    text str: Messages as text data
+    OUPUT:
+    words list: Processed text after all text processing steps
+    """
     # (1) Normalization
     text = re.sub(r"[^a-zA-Z0-9]", " ",text.lower())
     # (2) Tokenization
@@ -40,14 +62,18 @@ def tokenize(text):
 
 
 def build_model():
+        """
+    Build model with GridSearchCV
 
+    OUPUT:
+    Trained model
+    """
     # build a pipeline
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
         ('clf', MultiOutputClassifier(RandomForestClassifier()))
     ])
-
     # params dict to tune a model
     parameters = {
         'vect__ngram_range': ((1, 1), (1, 2)),
@@ -57,21 +83,23 @@ def build_model():
         'clf__estimator__criterion': ['gini', 'entropy'],
         'clf__estimator__max_depth': [25, 100, 200],
     }
-
     # instantiate a gridsearchcv object with the params defined
     cv = GridSearchCV(pipeline, param_grid=parameters, verbose=4, n_jobs=6)
 
     return cv
+
 def evaluate_model(model, X_test, Y_test, category_names):
         '''
     Function to evaluate a model and return the classificatio and accurancy score.
-    Inputs: Model, X_test, y_test, Catgegory_names
+    Inputs:
+          model: trained model
+          X_test: Test features
+          Y_test: Test targets
     Outputs: Prints the Classification report & Accuracy Score
     '''
-
     # predict on test data with tuned params
     y_pred = model.predict(X_test)
-
+    # print classification report
     print(classification_report(Y_test.values, y_pred,
      target_names=category_names))
 
@@ -82,8 +110,6 @@ def save_model(model, model_filepath):
     Output: save the model as pickle file in the give filepath
     '''
     pickle.dump(model, open(model_filepath, 'wb'))
-
-
 
 def main():
     if len(sys.argv) == 3:

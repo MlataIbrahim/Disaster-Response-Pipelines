@@ -1,15 +1,33 @@
+# import libraries
 import sys
 import pandas as pd
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+        '''
+    input:
+        messages_filepath: The path of messages dataset.
+        categories_filepath: The path of categories dataset.
+    output:
+        df: The merged dataset
+    '''
+    # load messages from csv file
     messages = pd.read_csv(messages_filepath)
+    # load categories from csv file
     categories = pd.read_csv(categories_filepath)
+    # merge dataframes on "id"
     df = pd.merge(messages,categories,on='id')
     return df
 
 
 def clean_data(df):
+        '''
+    input:
+        df: The merged dataset in previous step.
+    output:
+        df: Dataset after cleaning.
+    '''
+    # split dategories string
     categories = df['categories'].str.split(pat=";", expand=True)
     row = categories.loc[:0,:]
     category_colnames = row.applymap(lambda x: x[:-2]).iloc[0, :].tolist()
@@ -28,9 +46,14 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+            '''
+        Function to save the cleaned dataset to SQLite database
+        input:
+            df: The cleaned dataset in previous step.
+            database_filename : The path of saved database
+        '''
     engine = create_engine('sqlite:///' + database_filename)
     df.to_sql('messages', engine, index=False)
-
 
 def main():
     if len(sys.argv) == 4:
